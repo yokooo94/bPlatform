@@ -6,7 +6,7 @@
 ini_set('display_errors',1);
 error_reporting(E_ALL);
 
-// Открытиек сессии
+// Открытие сессии
 session_start();
 
 // Подключение файлов системы
