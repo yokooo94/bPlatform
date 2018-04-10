@@ -38,7 +38,7 @@ class User
     /**
      * Генерируем уникальный Token
      *
-     * @return Stirng
+     * @return String
      */
     public static function generateToken()
     {

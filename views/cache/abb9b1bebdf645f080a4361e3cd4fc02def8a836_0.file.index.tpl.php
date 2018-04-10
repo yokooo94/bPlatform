@@ -1,11 +1,11 @@
 <?php
-/* Smarty version 3.1.30, created on 2018-04-10 14:56:26
+/* Smarty version 3.1.30, created on 2018-04-11 01:10:44
   from "/Users/i337885/VS_WORKSPACE/bPlatform/views/cabinet/index.tpl" */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.30',
-  'unifunc' => 'content_5accb47a2693c5_49056934',
+  'unifunc' => 'content_5acd4474594546_27249126',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5accb47a2693c5_49056934 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5acd4474594546_27249126 (Smarty_Internal_Template $_smarty_tpl) {
 ?>
 <h2><?php echo $_smarty_tpl->tpl_vars['Title']->value;?>
 </h2><?php }

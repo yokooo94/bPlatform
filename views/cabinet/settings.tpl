@@ -1,0 +1,1 @@
+<h2>{$TitleSettings}</h2>
