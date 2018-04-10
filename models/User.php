@@ -19,21 +19,21 @@ class User
      * @return void
      */
     public static function add($name, $email, $password)
-        {
-            
-            //Делаем соединение с базой данных
-            Database::connect();
+    {
 
-            //Подготовка данных
-            $user = R::dispense(User::TABLE_NAME);
-            $user->login = $name;
-            $user->email = $email;
-            $user->password = password_hash($password, PASSWORD_DEFAULT);
-            $user->token = User::generateToken();
+        //Делаем соединение с базой данных
+        Database::connect();
 
-            //Сохраняем пользователя
-            R::store($user);
-        }
+        //Подготовка данных
+        $user = R::dispense(User::TABLE_NAME);
+        $user->login = $name;
+        $user->email = $email;
+        $user->password = password_hash($password, PASSWORD_DEFAULT);
+        $user->token = User::generateToken();
+
+        //Сохраняем пользователя
+        R::store($user);
+    }
 
     /**
      * Генерируем уникальный Token
