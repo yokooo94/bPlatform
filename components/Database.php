@@ -1,7 +1,7 @@
 <?php
 
 // Подключение библиотеки RedBeanPHP - https://redbeanphp.com/
-require 'libs/rb-mysql.php';
+require 'libs/RedBeanPHP/rb-mysql.php';
 
 /**
  * Класс Database
@@ -18,9 +18,9 @@ class Database
     {
         // Получаем параметры подключения из файла
         $paramsPath = ROOT . '/config/db_params.php';
-        $params = include($paramsPath);
+        $params = include $paramsPath;
         $dsn = "mysql:host={$params['host']};dbname={$params['dbname']}";
-        
+
         // Устанавливаем соединение
         R::setup($dsn, $params['user'], $params['password']);
     }
