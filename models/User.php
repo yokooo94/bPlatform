@@ -36,7 +36,7 @@ class User
         }
 
     /**
-     * Генерирует уникальный Token
+     * Генерация уникального Token
      *
      * @return Stirng
      */
