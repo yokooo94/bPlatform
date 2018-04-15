@@ -21,7 +21,10 @@ class Database
         $params = include $paramsPath;
         $dsn = "mysql:host={$params['host']};dbname={$params['dbname']}";
 
-        // Устанавливаем соединение
-        R::setup($dsn, $params['user'], $params['password']);
+        // Проверяем и устанавливаем соединение
+        if (!R::testConnection()) {
+            R::setup($dsn, $params['user'], $params['password']);
+        }
+
     }
 }

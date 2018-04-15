@@ -11,13 +11,20 @@ class CabinetController
      */
     public function actionIndex()
     {
+        if (User::isGuest()) {
+            // Удаляем информацию из сессии
+            unset($_SESSION);
+            // Перенаправляем пользователя на вход в личный кабинет
+            header("Location: /cabinet/signIn");
+        }
 
-        //Тест библиотеки RB
-        User::add('Тестовый Пользоватлеь', 'test@test.com', 'test');
+        $userId = $_SESSION['userId'];
 
-        //Тест библиотеки Smarty
+        //Текущий пользователь
+        $currentUser = User::getUser($userId);
+
         $smarty = SmartyHelper::create();
-        $title = "Личный кабинет";
+        $title = "Личный кабинет пользователя : " . $currentUser["login"];
         $smarty->assign("Title", $title);
 
         // Подключаем вид
@@ -31,10 +38,6 @@ class CabinetController
      */
     public function actionSettings()
     {
-
-        //Тест библиотеки RB
-        User::add('Тестовый Пользоватлеь2', 'test2@test.com', 'test2');
-
         // Тест библиотеки Smarty
         $smarty = SmartyHelper::create();
         $title = "Настройки личного кабинета";
@@ -42,6 +45,72 @@ class CabinetController
 
         // Подключаем вид
         $smarty->display(ROOT . '/views/cabinet/settings.tpl');
+
+        return true;
+    }
+
+    /**
+     * Action для входа в личный кабинет
+     */
+    public function actionSignIn()
+    {
+        //Ошибка авторизации
+        $error = null;
+
+        if (!empty($_POST)) {
+
+            //Проверка авторизации
+            $check = User::checkUser($_POST);
+            if (!is_null($check)) {
+                $error = $check;
+            }
+        }
+
+        $smarty = SmartyHelper::create();
+        $smarty->assign("Error", $error);
+
+        // Подключаем вид
+        $smarty->display(ROOT . '/views/cabinet/signIn.tpl');
+
+        return true;
+    }
+
+    /**
+     * Action для регистрации в личный кабинет
+     */
+    public function actionSignUp()
+    {
+        //Ошибка регистрации
+        $error = null;
+        if (!empty($_POST)) {
+
+            //Проверка и добавление пользователя
+            $check = User::register($_POST);
+            if (!is_null($check)) {
+                $error = $check;
+            }
+        }
+
+        $smarty = SmartyHelper::create();
+        $smarty->assign("Error", $error);
+
+        // Подключаем вид
+        $smarty->display(ROOT . '/views/cabinet/signUp.tpl');
+
+        return true;
+    }
+
+    /**
+     * Action для выхода из личного кабинета
+     */
+    public function actionLogOut()
+    {
+
+        // Удаляем информацию о пользователе из сессии
+        unset($_SESSION["user"]);
+
+        // Перенаправляем пользователя на вход в личный кабинет
+        header("Location: /cabinet/signIn");
 
         return true;
     }

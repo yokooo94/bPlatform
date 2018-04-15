@@ -18,21 +18,38 @@ class User
      * @param String $password
      * @return void
      */
-    public static function add($name, $email, $password)
+    public static function register($data)
     {
 
         //Делаем соединение с базой данных
         Database::connect();
+        $error = null;
 
-        //Подготовка данных
-        $user = R::dispense(User::TABLE_NAME);
-        $user->login = $name;
-        $user->email = $email;
-        $user->password = password_hash($password, PASSWORD_DEFAULT);
-        $user->token = User::generateToken();
+        $duplicate = R::findOne(User::TABLE_NAME, ' email = ? ', [$data["email"]]);
 
-        //Сохраняем пользователя
-        R::store($user);
+        if (!$duplicate) {
+
+            //Подготовка данных
+            $user = R::dispense(User::TABLE_NAME);
+            $user->login = $data["login"];
+            $user->email = $data["email"];
+            $user->password = password_hash($data["password"], PASSWORD_DEFAULT);
+            $user->token = User::generateToken();
+
+            //Сохраняем пользователя
+            R::store($user);
+
+            // Добавление информации о пользователе в сессию
+            User::auth($user['id'], $user['token']);
+
+            // Перенаправляем пользователя в личный кабинет
+            header("Location: /cabinet");
+
+        } else {
+            $error = Constants::ERROR_AUTH_DUPLICATE_EMAIL;
+        }
+
+        return $error;
     }
 
     /**
@@ -42,7 +59,82 @@ class User
      */
     public static function generateToken()
     {
-        return password_hash(uniqid(rand(), true), PASSWORD_DEFAULT);
+        return uniqid(rand(), true);
     }
 
+    /**
+     * Авторизация пользователя
+     *
+     * @param Object $user
+     * @return void
+     */
+    public static function auth($userId, $token)
+    {
+        // Записываем пользователя в сессию
+        $_SESSION['userId'] = $userId;
+        $_SESSION['token'] = $token;
+    }
+
+    /**
+     * Проверка пользователя на авторизацию
+     *
+     * @return boolean
+     */
+    public static function isGuest()
+    {
+        if (isset($_SESSION['userId'])) {
+            $user = User::getUser($_SESSION['userId']);
+            if ($user['token'] == $_SESSION['token']) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Получить данные пользователя по идентификатору
+     *
+     * @param String $userId
+     * @return User
+     */
+    public static function getUser($userId)
+    {
+        //Делаем соединение с базой данных
+        Database::connect();
+
+        return R::findOne(User::TABLE_NAME, ' id = ? ', [$userId]);
+    }
+
+    /**
+     * Проверка пользователя
+     *
+     * @param Obejct $data
+     * @return Error
+     */
+    public static function checkUser($data)
+    {
+
+        //Делаем соединение с базой данных
+        Database::connect();
+        $error = null;
+
+        $user = R::findOne(User::TABLE_NAME, ' email = ? ', [$data["email"]]);
+
+        if ($user) {
+
+            if (!password_verify($data['password'], $user['password'])) {
+                $error = Constants::ERROR_AUTH_PASSWORD;
+            } else {
+                // Добавление информации о пользователе в сессию
+                User::auth($user['id'], $user['token']);
+
+                // Перенаправляем пользователя в личный кабинет
+                header("Location: /cabinet");
+            }
+        } else {
+            $error = Constants::ERROR_AUTH_EMAIL;
+        }
+
+        return $error;
+    }
 }
