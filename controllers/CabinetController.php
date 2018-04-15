@@ -12,8 +12,10 @@ class CabinetController
     public function actionIndex()
     {
         if (User::isGuest()) {
-            // Удаляем информацию из сессии
-            unset($_SESSION);
+            // Удаляем информацию о пользователе из сессии
+            unset($_SESSION['userId']);
+            unset($_SESSION['token']);
+
             // Перенаправляем пользователя на вход в личный кабинет
             header("Location: /cabinet/signIn");
         }
@@ -38,6 +40,15 @@ class CabinetController
      */
     public function actionSettings()
     {
+        if (User::isGuest()) {
+            // Удаляем информацию о пользователе из сессии
+            unset($_SESSION['userId']);
+            unset($_SESSION['token']);
+
+            // Перенаправляем пользователя на вход в личный кабинет
+            header("Location: /cabinet/signIn");
+        }
+        
         // Тест библиотеки Smarty
         $smarty = SmartyHelper::create();
         $title = "Настройки личного кабинета";
@@ -107,7 +118,8 @@ class CabinetController
     {
 
         // Удаляем информацию о пользователе из сессии
-        unset($_SESSION["user"]);
+        unset($_SESSION['userId']);
+        unset($_SESSION['token']);
 
         // Перенаправляем пользователя на вход в личный кабинет
         header("Location: /cabinet/signIn");
