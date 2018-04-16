@@ -124,4 +124,52 @@ class CabinetController
 
         return true;
     }
+
+    /**
+     * Action для списка ставок в личном кабинете
+     */
+    public function actionBets()
+    {
+        //Проверка авторизации
+        User::isGuest();
+
+        $userId = $_SESSION['userId'];
+
+        //Список ставок
+        $bets = Bet::getBets($userId);
+
+        $smarty = SmartyHelper::create();
+        $title = "Список ставок";
+        $smarty->assign("TitleBets", $title);
+        $smarty->assign("Bets", $bets);
+
+        // Подключаем вид
+        $smarty->display(ROOT . '/views/cabinet/bets.tpl');
+
+        return true;
+    }
+
+    /**
+     * Action для просмотра ставки в личном кабинете
+     */
+    public function actionBet($betId)
+    {
+        //Проверка авторизации
+        User::isGuest();
+
+        $userId = $_SESSION['userId'];
+
+        $bet = Bet::getBet($betId);
+
+        $betContent = Bet::getBetContent($betId);
+        var_dump($betContent);
+        $smarty = SmartyHelper::create();
+        $smarty->assign("Bet", $bet);
+        $smarty->assign("Content", $betContent);
+
+        // Подключаем вид
+        $smarty->display(ROOT . '/views/cabinet/bet.tpl');
+
+        return true;
+    }
 }

@@ -115,6 +115,20 @@ class User
     }
 
     /**
+     * Получить данные пользователя Admin
+     *
+     * @param String $userId
+     * @return User[Admin]
+     */
+    public static function getAdmin()
+    {
+        //Делаем соединение с базой данных
+        Database::connect();
+
+        return R::findOne(User::TABLE_NAME, ' login = ? ', ['admin']);
+    }
+
+    /**
      * Получить маппинг функционал пользователя по идентификатору
      *
      * @param String $userId
