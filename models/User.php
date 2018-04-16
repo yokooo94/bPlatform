@@ -13,10 +13,8 @@ class User
     /**
      * Добавление нового пользователя
      *
-     * @param String $name
-     * @param String $email
-     * @param String $password
-     * @return void
+     * @param $_POST $data
+     * @return Error
      */
     public static function register($data)
     {
@@ -82,13 +80,23 @@ class User
      */
     public static function isGuest()
     {
+        $guest = true;
         if (isset($_SESSION['userId'])) {
             $user = User::getUser($_SESSION['userId']);
+
+            //Проверка токена
             if ($user['token'] == $_SESSION['token']) {
-                return false;
+                $guest = false;
             }
         }
-        return true;
+        if($guest){
+            // Удаляем информацию о пользователе из сессии
+            unset($_SESSION['userId']);
+            unset($_SESSION['token']);
+
+            // Перенаправляем пользователя на вход в личный кабинет
+            header("Location: /cabinet/signIn");
+        }
     }
 
     /**
