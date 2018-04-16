@@ -111,7 +111,7 @@ class User
         //Делаем соединение с базой данных
         Database::connect();
 
-        return R::findOne(User::TABLE_NAME, ' id = ? ', [$userId]);
+        return R::load(User::TABLE_NAME, $userId);
     }
 
     /**
