@@ -38,11 +38,14 @@ class CabinetController
 
         //Проверка авторизации
         User::isGuest();
-        
+
         // Тест библиотеки Smarty
         $smarty = SmartyHelper::create();
         $title = "Настройки личного кабинета";
         $smarty->assign("TitleSettings", $title);
+
+        $pathListFunction = ROOT . "/views/cabinet/includes/listFunction";
+        $smarty->assign("PathListFunction", $pathListFunction);
 
         // Подключаем вид
         $smarty->display(ROOT . '/views/cabinet/settings.tpl');
