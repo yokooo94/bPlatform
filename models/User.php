@@ -63,7 +63,8 @@ class User
     /**
      * Авторизация пользователя
      *
-     * @param Object $user
+     * @param String $userId
+     * @param String $token
      * @return void
      */
     public static function auth($userId, $token)
