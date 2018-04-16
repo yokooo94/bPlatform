@@ -72,9 +72,9 @@ class Database
             R::store($functionTwo);
 
             $admin->link('user_function',
-                array('status' => true, 'dateLimition' => '2018-04-25 00:00:00'))->function = $functionOne;
+                array('status' => true, 'dateLimitation' => '2018-04-25 00:00:00'))->function = $functionOne;
             $admin->link('user_function',
-                array('status' => false, 'dateLimition' => '2018-04-25 00:00:00'))->function = $functionTwo;
+                array('status' => false, 'dateLimitation' => '2018-04-25 00:00:00'))->function = $functionTwo;
 
             //Сохраняем пользователя
             R::store($admin);
