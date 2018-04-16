@@ -90,7 +90,7 @@ class User
                 $guest = false;
             }
         }
-        if($guest){
+        if ($guest) {
             // Удаляем информацию о пользователе из сессии
             unset($_SESSION['userId']);
             unset($_SESSION['token']);
@@ -112,6 +112,20 @@ class User
         Database::connect();
 
         return R::load(User::TABLE_NAME, $userId);
+    }
+
+    /**
+     * Получить маппинг функционал пользователя по идентификатору
+     *
+     * @param String $userId
+     * @return User_Function
+     */
+    public static function getUserFunction($userId)
+    {
+        //Делаем соединение с базой данных
+        Database::connect();
+
+        return R::findAll('user_function', ' user_id = ? ', [$userId]);
     }
 
     /**
