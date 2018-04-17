@@ -41,8 +41,10 @@ class CabinetController
 
         $userId = $_SESSION['userId'];
 
-        //Маппинг данных пользователь - функционал
-        $userMappingFunction = User::getUserFunction($userId);
+        //Текущий пользователь
+        $currentUser = User::getUser($userId);
+        $currentUser->ownUserFunction;
+
 
         $smarty = SmartyHelper::create();
         $title = "Настройки личного кабинета";
@@ -50,7 +52,7 @@ class CabinetController
 
         $pathListFunction = ROOT . "/views/cabinet/includes/listFunction";
         $smarty->assign("PathListFunction", $pathListFunction);
-        $smarty->assign("UserMappingFunction", $userMappingFunction);
+        $smarty->assign("User", $currentUser);
 
         // Подключаем вид
         $smarty->display(ROOT . '/views/cabinet/settings.tpl');
@@ -135,13 +137,14 @@ class CabinetController
 
         $userId = $_SESSION['userId'];
 
-        //Список ставок
-        $bets = Bet::getBets($userId);
+        //Текущий пользователь
+        $currentUser = User::getUser($userId);
+        $currentUser->ownBet;
 
         $smarty = SmartyHelper::create();
         $title = "Список ставок";
         $smarty->assign("TitleBets", $title);
-        $smarty->assign("Bets", $bets);
+        $smarty->assign("User", $currentUser);
 
         // Подключаем вид
         $smarty->display(ROOT . '/views/cabinet/bets.tpl');
@@ -159,13 +162,13 @@ class CabinetController
 
         $userId = $_SESSION['userId'];
 
-        $bet = Bet::getBet($betId);
+        //Текущий пользователь
+        $currentUser = User::getUser($userId);
+        $bet = $currentUser->ownBet[$betId];        
 
-        $betContent = Bet::getBetContent($betId);
-        var_dump($betContent);
         $smarty = SmartyHelper::create();
+        $smarty->assign("User", $currentUser);
         $smarty->assign("Bet", $bet);
-        $smarty->assign("Content", $betContent);
 
         // Подключаем вид
         $smarty->display(ROOT . '/views/cabinet/bet.tpl');

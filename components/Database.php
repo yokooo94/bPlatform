@@ -121,10 +121,10 @@ class Database
         R::store($team2);
 
         $event1 = R::dispense('event');
-        $event1->teamHome = $team1;
-        $event1->teamAway = $team2;
         $event1->date = '2018-04-21 18:00:00';
         $event1->tour = $tour;
+        $event1->teamHome = $team1;
+        $event1->teamAway = $team2;
         R::store($event1);
 
         $team3 = R::dispense('team');
@@ -136,10 +136,10 @@ class Database
         R::store($team4);
 
         $event2 = R::dispense('event');
-        $event2->teamHome = $team3;
-        $event2->teamAway = $team4;
         $event2->date = '2018-04-22 18:00:00';
         $event2->tour = $tour;
+        $event2->teamHome = $team3;
+        $event2->teamAway = $team4;
         R::store($event2);
 
         $betType1 = R::dispense('bettype');
@@ -154,15 +154,7 @@ class Database
         $betType3->name = 'Победа гостевой команды';
         R::store($betType3);
 
-        $bet = R::dispense('bet');
-        $bet->user = User::getAdmin();
-        $bet->amount = 1000.0;
-        $bet->coefficient = 5.0;
-        $bet->status = "В ожидании";
-        R::store($bet);
-
         $betContent1 = R::dispense('betcontent');
-        $betContent1->bet = $bet;
         $betContent1->event = $event1;
         $betContent1->bettype = $betType1;
         $betContent1->coefficient = 2.5;
@@ -170,12 +162,18 @@ class Database
         R::store($betContent1);
 
         $betContent2 = R::dispense('betcontent');
-        $betContent2->bet = $bet;
         $betContent2->event = $event2;
         $betContent2->bettype = $betType2;
         $betContent2->coefficient = 2.0;
         $betContent2->status = "Выигрыш";
         R::store($betContent2);
 
+        $bet = R::dispense('bet');
+        $bet->user = User::getAdmin();
+        $bet->amount = 1000.0;
+        $bet->coefficient = 5.0;
+        $bet->status = "В ожидании";
+        $bet->ownBetcontent = array($betContent1, $betContent2);
+        R::store($bet);
     }
 }

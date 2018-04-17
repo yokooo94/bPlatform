@@ -129,20 +129,6 @@ class User
     }
 
     /**
-     * Получить маппинг функционал пользователя по идентификатору
-     *
-     * @param String $userId
-     * @return User_Function
-     */
-    public static function getUserFunction($userId)
-    {
-        //Делаем соединение с базой данных
-        Database::connect();
-
-        return R::findAll('user_function', ' user_id = ? ', [$userId]);
-    }
-
-    /**
      * Проверка пользователя
      *
      * @param Obejct $data

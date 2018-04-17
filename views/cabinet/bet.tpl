@@ -1,8 +1,17 @@
+<a href="/cabinet/bets">Назад</a>
+
 <h2>Ставка #{$Bet.id}</h2>
 
-<ul>
-        {foreach from=$Content item=row}
-        {$row->event->teamHome}
-        <li>{$row->event->tour->season->league->sport->name}. {$row->event->tour->season->league->name}. Тур : {$row->event->tour->number}. {$row->event->date} Ставка :  {$row->bettype->name}, Коэффициент : {$row->coefficient}, Статус - {$row->status}</li>
+        {foreach from=$Bet->ownBetcontent item=content}
+        
+        
+        <p> {$content->event->tour->season->league->sport->name}.
+            {$content->event->tour->season->league->name}.
+            Тур : {$content->event->tour->number}.
+                {$content->event->teamHome} - {$content->event->teamAway}
+            {$content->event->date}
+            Ставка :  {$content->bettype->name},
+            Коэффициент : {$content->coefficient},
+            Статус - {$content->status}
+        </p>
     {/foreach}
-</ul>

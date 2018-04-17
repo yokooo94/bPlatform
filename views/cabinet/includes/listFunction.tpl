@@ -9,11 +9,11 @@
     <p>Список функционала у пользователя</p>
 
 <ul>
-    {if empty($UserMappingFunction)}
+    {if empty($User->ownUserFunction)}
         <li>Список пуст</li>
     {else}
-        {foreach from=$UserMappingFunction item=mapping}
-            <li>{$mapping->function->name} ({$mapping->function->description}) [{$mapping->function->price} р.]</li>
+        {foreach from=$User->ownUserFunction item=map}
+            <li>Статус: {$map->status}. Активен до : {$map->dateLimitation} {$map->function->name} ({$map->function->description}) [{$map->function->price} р.]</li>
         {/foreach}
     {/if}
 </ul>
