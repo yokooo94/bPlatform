@@ -2,6 +2,7 @@
 
 return array(
     //Кабинет
+    'cabinet/bets/add' => 'cabinet/addBet', //actionAddBets в CabinetController
     'cabinet/bets/([0-9]+)' => 'cabinet/bet/$1', //actionBets в CabinetController
     'cabinet/bets' => 'cabinet/bets', //actionBets в CabinetController
     'cabinet/settings' => 'cabinet/settings', // actionSettings в CabinetController

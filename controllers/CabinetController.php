@@ -128,6 +128,50 @@ class CabinetController
     }
 
     /**
+     * Action для добавления ставки
+     */
+    public function actionAddBet()
+    {
+        //Проверка авторизации
+        User::isGuest();
+
+        $userId = $_SESSION['userId'];
+
+        //Текущий пользователь
+        $currentUser = R::load('user', $userId);
+
+        if (!empty($_POST)) {
+
+            $betContent1 = R::dispense('betcontent');
+            $betContent1->event = R::load('event',$_POST['event']);
+            $betContent1->bettype = R::load('bettype',$_POST['bettype']);
+            $betContent1->coefficient = 2.0;
+            $betContent1->status = "Выигрыш";
+            R::store($betContent1);
+    
+            $bet = R::dispense('bet');
+            $bet->user = $currentUser;
+            $bet->amount = 1000.0;
+            $bet->coefficient = 5.0;
+            $bet->status = "В ожидании";
+            $bet->ownBetcontent = array($betContent1);
+            R::store($bet);
+
+            header("Location: /cabinet/bets");            
+        }
+
+        $smarty = SmartyHelper::create();
+        $title = "Добавление ставки";
+        $smarty->assign("TitleAddBet", $title);
+        $smarty->assign("User", $currentUser);
+
+        // Подключаем вид
+        $smarty->display(ROOT . '/views/cabinet/addBet.tpl');
+
+        return true;
+    }
+
+    /**
      * Action для списка ставок в личном кабинете
      */
     public function actionBets()

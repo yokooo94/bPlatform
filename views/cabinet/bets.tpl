@@ -2,7 +2,7 @@
 
 <h2>{$TitleBets}</h2>
 
-
+<a href="/cabinet/bets/add">Добавить ставку</a>
 <ul>
     {if empty($User->ownBet)}
         <li>Ставок пока нет</li>
